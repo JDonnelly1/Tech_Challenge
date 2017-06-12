@@ -26,7 +26,7 @@ def main():
                         help='number of layers in the RNN')
     parser.add_argument('--model', type=str, default='lstm',
                         help='rnn, gru, lstm, or nas')
-    parser.add_argument('--batch_size', type=int, default=50,
+    parser.add_argument('--batch_size', type=int, default=1,
                         help='minibatch size')
     parser.add_argument('--seq_length', type=int, default=50,
                         help='RNN sequence length')
@@ -92,6 +92,8 @@ def train(args):
 
     model = Model(args)
 
+    d_cell = tf.nn.dynamic_rnn(model.cell)
+
     with tf.Session() as sess:
         # instrument for tensorboard
         summaries = tf.summary.merge_all()
@@ -130,6 +132,11 @@ def train(args):
                 # print the current sequence of characters and weight values
                 print("Batch of Characters: ",chars)
                 print("Current weight values: ", weights)
+
+                d_weights = sess.run(d_cell, {input_data:x})
+
+                print("D_weights", d_weights)
+
 
                 end = time.time()
                 print("{}/{} (epoch {}), train_loss = {:.3f}, time/batch = {:.3f}"

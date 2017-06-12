@@ -92,6 +92,9 @@ def train(args):
 
     model = Model(args)
 
+
+
+
     with tf.Session() as sess:
         # instrument for tensorboard
         summaries = tf.summary.merge_all()
@@ -129,7 +132,18 @@ def train(args):
 
                 # print the current sequence of characters and weight values
                 print("Batch of Characters: ",chars)
-                print("Current weight values: ", weights)
+
+                print("Layer 1 Weights.shape: ", weights[3].shape)
+                print("Layer 1 Biases.shape: ", weights[4].shape)
+                print("Layer 2 Weights.shape: ", weights[5].shape)
+                print("Layer 2 Biases.shape: ", weights[6].shape)
+
+                print("Layer 1 Weights: ", weights[3])
+                print("Layer 1 Biases: ", weights[4])
+                print("Layer 2 Weights: ", weights[5])
+                print("Layer 2 Biases: ", weights[6])
+
+
 
                 end = time.time()
                 print("{}/{} (epoch {}), train_loss = {:.3f}, time/batch = {:.3f}"

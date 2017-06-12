@@ -23,6 +23,7 @@ class Model():
         else:
             raise Exception("model type not supported: {}".format(args.model))
 
+
         cells = []
         for _ in range(args.num_layers):
             cell = cell_fn(args.rnn_size)
@@ -32,7 +33,10 @@ class Model():
                                           output_keep_prob=args.output_keep_prob)
             cells.append(cell)
 
+
+
         self.cell = cell = rnn.MultiRNNCell(cells, state_is_tuple=True)
+
 
         self.input_data = tf.placeholder(
             tf.int32, [args.batch_size, args.seq_length])
@@ -63,6 +67,8 @@ class Model():
         outputs, last_state = legacy_seq2seq.rnn_decoder(inputs, self.initial_state, cell, loop_function=loop if not training else None, scope='rnnlm')
         output = tf.reshape(tf.concat(outputs, 1), [-1, args.rnn_size])
 
+
+        
 
         self.logits = tf.matmul(output, softmax_w) + softmax_b
         self.probs = tf.nn.softmax(self.logits)
